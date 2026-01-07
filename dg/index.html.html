@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#000000">
+    <title>00:00 - REWIND</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;800&display=swap');
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; font-family: 'Montserrat', sans-serif;
+            background-color: #000; color: white; user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* TIKLAMA ALANI (Ekranın en üstünde görünmez katman - Garantili İlerleme) */
+        #click-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9999; cursor: pointer;
+        }
+
+        /* SAHNELER */
+        .slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; opacity: 0; pointer-events: none;
+            transition: opacity 0.5s ease-in-out; /* Geçişi hızlandırdım */
+            background: #000; 
+            padding: 0; box-sizing: border-box; z-index: 1;
+        }
+        .slide.active { opacity: 1; z-index: 10; }
+
+        /* GÖRSELLER İÇİN AYAR */
+        .full-img {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; /* Resmi ekrana tam yayar */
+            z-index: 1; opacity: 0.8; /* Yazılar okunsun diye hafif karartma */
+        }
+        
+        /* RESİM ÜZERİNDEKİ YAZILAR */
+        .overlay-text {
+            position: relative; z-index: 20; /* Resmin üstünde */
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            padding: 20px;
+        }
+
+        /* GİRİŞ SAHNESİ */
+        .big-text { font-size: 5rem; font-weight: 800; margin: 0; background: -webkit-linear-gradient(#fff, #999); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: heartbeat 1.5s infinite; }
+        .small-text { font-size: 1.2rem; opacity: 0.7; letter-spacing: 2px; margin-bottom: 10px; }
+        .click-hint { position: absolute; bottom: 50px; font-size: 0.9rem; opacity: 0.8; animation: blink 2s infinite; text-shadow: 0 2px 4px black; z-index: 50; width: 100%; text-align: center; pointer-events: none;}
+
+        /* SAYAÇ & FİNAL */
+        #counter-slide { background-color: #000; z-index: 15; }
+        #timer { font-size: 1.8rem; font-family: 'Courier New', monospace; margin-top: 20px; line-height: 1.5; color: #00ff00; text-shadow: 0 0 10px #00ff00; }
+        
+        #final-slide { background: #1a1a1a; overflow: hidden; padding: 20px; z-index: 15; }
+        #hearts-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .heart { position: absolute; opacity: 0.6; }
+        .final-content { position: relative; z-index: 20; }
+        .cake-emoji { font-size: 4rem; margin-bottom: 20px; animation: bounce 2s infinite; }
+        .final-title { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 30px; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .glass-box { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); padding: 20px 30px; border-radius: 20px; display: inline-block; margin-bottom: 20px; }
+        .pass-label { display: block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; color: rgba(255,255,255,0.7); }
+        .the-password { font-size: 3rem; font-weight: 300; letter-spacing: 10px; color: #fff; }
+
+        @keyframes heartbeat { 0% { transform: scale(1); } 15% { transform: scale(1.1); } 30% { transform: scale(1); } 45% { transform: scale(1.1); } 60% { transform: scale(1); } }
+        @keyframes blink { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+    </style>
+</head>
+<body>
+
+    <audio id="audio-0" loop src="intro.mp3"></audio> <audio id="audio-1" loop src="muzik0.mp3"></audio>
+    <audio id="audio-2" loop src="muzik1.mp3"></audio>
+    <audio id="audio-3" loop src="muzik2.mp3"></audio>
+    <audio id="audio-4" loop src="muzik3.mp3"></audio>
+    <audio id="audio-5" loop src="muzik4.mp3"></audio>
+    <audio id="audio-6" loop src="muzik5.mp3"></audio>
+    <audio id="audio-7" loop src="muzik6.mp3"></audio>
+    <audio id="audio-8" loop src="muzik7.mp3"></audio>
+    <audio id="audio-9" loop src="muzik8.mp3"></audio>
+    <audio id="audio-10" loop src="muzik9.mp3"></audio>
+    <audio id="audio-11" loop src="muzik10.mp3"></audio>
+    <audio id="audio-12" loop src="muzik11.mp3"></audio>
+    <audio id="audio-13" loop src="muzik12.mp3"></audio>
+    <audio id="audio-14" loop src="muzik13.mp3"></audio>
+    <audio id="audio-15" loop src="muzik14.mp3"></audio>
+    <audio id="audio-16" loop src="muzik15.mp3"></audio>
+    <audio id="audio-17" loop src="muzik16.mp3"></audio>
+    <audio id="audio-18" loop src="muzik17.mp3"></audio>
+    <audio id="audio-final" loop src="final.mp3"></audio>
+
+    <div id="click-layer" onclick="handleGlobalClick()"></div>
+
+    <div class="slide active">
+        <p class="small-text">ilişkimizin</p>
+        <h1 class="big-text">00.00</h1>
+        <p class="small-text">noktasına hazır mısın?</p>
+        <div class="click-hint">(başlamak için dokun)</div>
+    </div>
+
+    <div class="slide">
+        <img src="giris.jpg" class="full-img"> <div class="click-hint">(devam et)</div>
+    </div>
+
+    <div class="slide">
+        <img src="foto1.png" class="full-img">
+        <div class="click-hint">(devam et)</div>
+    </div>
+
+    <div class="slide">
+        <img src="foto2.png" class="full-img">
+        <div class="click-hint">(devam et)</div>
+    </div>
+    
+    <div class="slide">
+        <img src="foto3.jpg" class="full-img">
+        <div class="click-hint">(devam et)</div>
+    </div>
+
+     <div class="slide">
+        <img src="foto4.png" class="full-img">
+        <div class="click-hint">(devam et)</div>
+    </div>
+    
+    <div class="slide">
+        <img src="foto5.png" class="full-img">
+        <div class="click-hint">(devam et)</div>
+    </div>
+
+    <div class="slide">
+        <img src="foto6.png" class="full-img">
+        <div class="click-hint">(devam et)</div>
+    </div>
+
+    <div class="slide">
+        <img src="foto7.png" class="full-img">
+        <div class="click-hint">(devam et)</div>
+    </div>
+
+     <div class="slide">
+        <img src="foto8.png" class="full-img">
+        <div class="click-hint">(devam et)</div>
+    </div>
+    
+    <div class="slide">
+        <img src="foto9.png" class="full-img">
+        <div class="click-hint">(devam et)</div>
+    </div>
+
+    <div class="slide">
+        <img src="foto10.png" class="full-img">
+        <div class="click-hint">(devam et)</div>
+    </div>
+
+    <div class="slide">
+        <img src="foto11.png" class="full-img">
+        <div class="click-hint">(devam et)</div>
+    </div>
+
+    <div class="slide">
+        <img src="foto12.png" class="full-img">
+        <div class="click-hint">(devam et)</div>
+    </div>
+
+    <div class="slide">
+        <img src="foto13.png" class="full-img">
+        <div class="click-hint">(devam et)</div>
+    </div>
+
+    <div class="slide">
+        <img src="foto14.png" class="full-img">
+        <div class="click-hint">(devam et)</div>
+    </div>
+
+    <div class="slide">
+        <img src="foto15.png" class="full-img">
+        <div class="click-hint">(devam et)</div>
+    </div>
+
+    <div class="slide">
+        <img src="foto16.png" class="full-img">
+        <div class="click-hint">(devam et)</div>
+    </div>
+
+    <div class="slide">
+        <img src="foto17.png" class="full-img">
+        <div class="click-hint">(devam et)</div>
+    </div>
+
+    <div class="slide" id="counter-slide">
+        <p>Seninle geçen tam...</p>
+        <div id="timer">Hesaplanıyor...</div>
+        <p style="margin-top:20px; opacity:0.6; font-size:0.8rem;">(ve bu sayaç hiç durmayacak...)</p>
+        <div class="click-hint">(son adıma geç)</div>
+    </div>
+
+    <div class="slide" id="final-slide">
+        <div id="hearts-container"></div>
+        <div class="final-content">
+            <div class="cake-emoji">🎂</div>
+            <h1 class="final-title">İYİ Kİ DOĞDUN<br>HER ŞEYİM</h1>
+            <div class="glass-box">
+                <span class="pass-label">HEDİYE ŞİFRESİ</span>
+                <div class="the-password">0704</div>
+            </div>
+            <p style="opacity: 0.8; margin-top: 10px;">Kutuyu açma zamanı...</p>
+        </div>
+    </div>
+
+    <script>
+        /* --- TARİH AYARINI BURADAN YAP --- */
+        const startDate = new Date("2025-04-07T19:26:00").getTime();
+        /* ---------------------------------- */
+
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function handleGlobalClick() {
+            // İlk tıklamada tam ekran yap
+            if (currentSlide === 0) {
+                const elem = document.documentElement;
+                if (elem.requestFullscreen) elem.requestFullscreen().catch(err => {});
+                else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+            }
+
+            // Son sahnede değilsek ilerle
+            if (currentSlide < slides.length - 1) {
+                // Mevcut sahneyi kapat
+                slides[currentSlide].classList.remove('active');
+                
+                // Müzikleri yönet
+                stopAllMusic();
+
+                // Yeni sahneye geç
+                currentSlide++;
+                slides[currentSlide].classList.add('active');
+
+                // Yeni sahne için müzik çal
+                playMusicForSlide(currentSlide);
+
+                // Eğer final sahnesiyse kalpleri başlat
+                if(currentSlide === slides.length - 1) {
+                    createStaticHearts();
+                    // Final müziğini özel olarak çal
+                    const finalAudio = document.getElementById('audio-final');
+                    if(finalAudio) finalAudio.play().catch(e => console.log(e));
+                }
+            }
+        }
+
+        function playMusicForSlide(index) {
+            // audio-1, audio-2, audio-3 diye arar
+            // Eğer final sahnesiyse yukarıda özel çaldık zaten
+            if(index < slides.length - 1) { 
+                const audio = document.getElementById('audio-' + index);
+                if(audio) audio.play().catch(e => console.log("Müzik yok veya hata:", e));
+            }
+        }
+
+        function stopAllMusic() {
+            document.querySelectorAll('audio').forEach(audio => { 
+                audio.pause(); 
+                audio.currentTime = 0; 
+            });
+        }
+
+        // Giriş müziğini (varsa) sayfa yüklenince hazırlamaya çalış
+        window.onload = function() {
+           // Otomatik oynatma engeli yüzünden ilk tıklamayı bekler
+        };
+
+        // Sayaç Motoru
+        setInterval(function() {
+            const now = new Date().getTime();
+            const distance = now - startDate;
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById("timer").innerHTML = days + " GÜN <br>" + hours + " SAAT <br>" + minutes + " DAKİKA <br>" + seconds + " SANİYE";
+        }, 1000);
+
+        // Kalp Efekti
+        function createStaticHearts() {
+            const container = document.getElementById('hearts-container');
+            if(container.children.length > 0) return;
+            const colors = ['#FF0000', '#FF69B4', '#00BFFF'];
+            for(let i=0; i<50; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.style.left = Math.random() * 100 + '%'; heart.style.top = Math.random() * 100 + '%';
+                heart.style.width = (Math.random() * 30 + 15) + 'px'; heart.style.transform = `rotate(${Math.random() * 360}deg)`;
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                heart.innerHTML = `<svg viewBox="0 0 32 29.6" style="width: 100%; height: auto; fill: ${randomColor};"><path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-11.8,16-21.2C32,3.8,28.2,0,23.6,0z"/></svg>`;
+                container.appendChild(heart);
+            }
+        }
+    </script>
+</body>
+</html>
